@@ -99,7 +99,7 @@ m.addConstrs((S[p, t] * Z[p, t] < UMBRAL_CRITICO for p in P for t in T), name="R
 
 # R5: Un paciente puede estar en una cama no ideal
 # TODO: (Como modelamos B_G_p?)
-m.addConstrs((alpha[p] == 1 - quicksum(...)), name="R5")
+# m.addConstrs((alpha[p] == 1 - quicksum(...)), name="R5")
 
 
 # R6: Un paciente p no puede estar en 2 unidades y/o 2 tipos de cama al mismo tiempo.
@@ -116,7 +116,7 @@ m.addConstrs(
 # R7: Si p es COVID-19 positivo, solo puede ser asignado a una unidad COVID-19.
 # TODO: COV definido?
 m.addConstrs(
-    ((quicksum(y[p, u, f, t] for f in F) for u in COV) == V[p] for p in P for t in T),
+    ((quicksum(Y[p, u, f, t] for f in F) for u in COV) == V[p] for p in P for t in T),
     name="R7",
 )
 
@@ -155,6 +155,7 @@ m.addConstrs(
 
 # R11: p no puede ser trasladado más de X veces durante el día
 # TODO: definir X
+# TODO: p a la derecha no existe
 m.addConstrs(
     (quicksum(Z[p, t] for p in P) <= x for t in range(E_start[p], E_end[p] + 1)),
     name="R11",
@@ -164,7 +165,7 @@ m.addConstrs(
 # Objective
 
 
-m.setObjective(w, GRB.MINIMIZE)
+# m.setObjective(w, GRB.MINIMIZE)
 
 # Optimize
 m.optimize()
