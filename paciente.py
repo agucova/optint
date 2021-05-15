@@ -4,13 +4,13 @@ seed(32893892489)
 
 class Paciente:
 
-    def __init__(self, cov, cama_ideal, unidad_ideal, severidad, entrada, salida):
-        self.cov = cov # booleano
-        self.cama_ideal = cama_ideal # entero
-        self.unidad_ideal = unidad_ideal # entero
-        self.severidad = severidad # float
-        self.entrada = entrada # entero entre 1 y 24
-        self.salida = salida # entero entre 1 y 24, entrada < salida
+    def __init__(self):
+        self.cov = None # booleano
+        self.cama_ideal = None # entero
+        self.unidad_ideal = None # entero
+        self.severidad = None # float
+        self.entrada = None # entero entre 1 y 24
+        self.salida = None # entero entre 1 y 24, entrada < salida
         
     @property
     def v(self):

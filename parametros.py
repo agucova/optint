@@ -1,4 +1,4 @@
-import pandas as pd
+# import pandas as pd
 
-df = pd.read_csv('archivos/Egresos_Hospitalarios_2020.csv')
-print(df)
+# df = pd.read_csv('archivos/Egresos_Hospitalarios_2020.csv')
+# print(df)
