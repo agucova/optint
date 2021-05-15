@@ -31,4 +31,8 @@ end)
 
 @constraints(m, begin
     R1[u = U, f = F, t = T], (sum(Y[p, u, f, t] for p in p) <= C[u, f])
+
+    R2₁[p = P, u = U, f = F, t = range(E_start[p] + 1, E_end[p] + 1)], (y[p, u, f, t - 1] - y[p, u, f, t] <= dif[p, u, f, t]),
+    R2₂[p = P, u = U, f = F, t = range(E_start[p] + 1, E_end[p] + 1)], y[p, u, f, t] - y[p, u, f, t - 1] <= dif[p,u,f,t]
+    R2₃[p = P, t = range(E_start[p] + 1, E_end[p] + 1)], sum(dif[p, u, f, t])
 end)
