@@ -4,9 +4,9 @@ from random import randint
 
 m = Model(name="Distribución de Camas")
 
+print("[INFO] Generating sets...")
 # Sets
-
-P = range(1, 271)
+P = range(1, 131)
 U = range(1, 9)
 F = range(1, 4)
 COV = range(1, 4)
@@ -16,7 +16,7 @@ B = [{1},
     {1, 2, 3, 4},]  # rellenar sea el caso
 T = range(1, 13)
 
-
+print("[INFO] Generating parameters...")
 # Parámetros
 C = [[0, 0, 0, 0, 0],
     [0, 0, 0, 0, 38],
@@ -51,16 +51,18 @@ S = [paciente.s for paciente in pacientes]
 A = {index: randint(0, 5) for index in T}  # hay que editarlo
 Cost = [10, 7, 2] # TODO: Definir costos
 
-
 # Variables
+print("[INFO] Creating variables...")
 Y = m.addVars(P, U, F, T, vtype=GRB.BINARY, name="Y")
 alpha = m.addVars(P, T, vtype=GRB.BINARY, name="alpha")
 Z = m.addVars(P, T, vtype=GRB.BINARY, name="Z")
 Dif = m.addVars(P, U, F, T, vtype=GRB.BINARY, name="Dif")
 
-# Constraints
 
+# Constraints
+print("[INFO] Creating constraints...")
 # R1: Se debe respetar la cantidad de camas f en todo u
+print("[INFO] Creating R1 constraint..."
 m.addConstrs(
     (quicksum(Y[p, u, f, t] for p in P) <= C[u][f] for u in U for f in F for t in T),
     name="R1"
@@ -68,6 +70,7 @@ m.addConstrs(
 
 
 # R2: Cambio de cama
+print("[INFO] Creating R2.1 constraint..."
 m.addConstrs(
     (
         Y[p, u, f, t - 1] - Y[p, u, f, t] <= Dif[p, u, f, t]
@@ -79,6 +82,7 @@ m.addConstrs(
     name="R2.1",
 )
 
+print("[INFO] Creating R2.2 constraint..."
 m.addConstrs(
     (
         Y[p, u, f, t] - Y[p, u, f, t - 1] <= Dif[p, u, f, t]
@@ -90,6 +94,7 @@ m.addConstrs(
     name="R2.2",
 )
 
+print("[INFO] Creating R2.3 constraint..."
 m.addConstrs(
     (
         quicksum(Dif[p, u, f, t] for u in U for f in F) == 2 * Z[p, t]
@@ -99,23 +104,26 @@ m.addConstrs(
     name="R2.3",
 )
 
+print("[INFO] Creating R2.4 constraint..."
 m.addConstrs((Z[p, t] == 0 for p in P for t in range(1, E_start[p] + 1)), name="R2.4")
 
+print("[INFO] Creating R2.5 constraint..."
 m.addConstrs(
     (Z[p, t] == 0 for p in P for t in range(E_end[p] + 1, T[-1] + 1)), name="R2.5"
 )
 
-
 # R3: Hay un máximo de cambios por hora
+print("[INFO] Creating R3 constraint..."
 m.addConstrs((quicksum(Z[p] for p in P) <= A[t] for t in T), name="R3")
 
 
 # R4: No se puede trasladar a los pacientes críticos
+print("[INFO] Creating R4 constraint..."
 m.addConstrs((S[p, t] * Z[p, t] < UMBRAL_CRITICO for p in P for t in T), name="R4")
 
 
 # R5: Un paciente puede estar en una cama no ideal
-# TODO: (Como modelamos B_G_p?)
+print("[INFO] Creating R5 constraint..."
 m.addConstrs(
     (
         alpha[p] == 1 - quicksum(Y[p, u, f, t] for f in B[G[p]] for u in U)
@@ -126,6 +134,7 @@ m.addConstrs(
 
 
 # R6: Un paciente p no puede estar en 2 unidades y/o 2 tipos de cama al mismo tiempo.
+print("[INFO] Creating R6 constraint..."
 m.addConstrs(
     (
         quicksum(Y[p, u, f, t] for u in U for f in F) == 1
@@ -138,6 +147,7 @@ m.addConstrs(
 
 
 # R7: Si p es COVID-19 positivo, solo puede ser asignado a una unidad COVID-19.
+print("[INFO] Creating R7 constraint..."
 m.addConstrs(
     ((quicksum(Y[p, u, f, t] for f in F) for u in COV) == V[p] for p in P for t in T),
     name="R7",
