@@ -106,8 +106,9 @@ m.addConstrs((S[p, t] * Z[p, t] < UMBRAL_CRITICO for p in P for t in T), name="R
 m.addConstrs(
     (
         quicksum(Y[p, u, f, t] for u in U for f in F) == 1
-        for t in range(E_start[p], E_end[p] + 1)
         for p in P
+        for t in range(E_start[p], E_end[p] + 1)
+        
     ),
     name="R6",
 )
@@ -157,7 +158,7 @@ m.addConstrs(
 # TODO: definir X
 # TODO: p a la derecha no existe
 m.addConstrs(
-    (quicksum(Z[p, t] for p in P) <= x for t in range(E_start[p], E_end[p] + 1)),
+    (quicksum(Z[p, t] for p in P) <= x for t in T),
     name="R11",
 )
 
