@@ -4,7 +4,7 @@ from random import randint
 from alive_progress import alive_bar
 # from debug import listen
 
-with alive_bar(23) as step:
+with alive_bar(23, title="Optin't Model", force_tty=True, enrich_print=False) as step:
     step.text("Initializing gurobi model...")
     m = Model(name="Distribución de Camas")
     step()
