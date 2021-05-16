@@ -5,7 +5,7 @@ from alive_progress import alive_bar
 
 m = Model(name="Distribución de Camas")
 print()
-
+print("Constructing model...")
 with alive_bar(20) as step:
     step.text("Generating sets...")
     # Sets
