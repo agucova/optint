@@ -2,13 +2,12 @@
 name = "optint"
 version = "0.1.0"
 description = ""
-authors = ["Agustín Covarrubias <agucova@uc.cl>, Ignacio Monardes <iamonardes@uc.cl>"]
+authors = ["Agustín Covarrubias <agucova@uc.cl>, Ignacio Monardes <iamonardes@uc.cl>", "José Pedro Vargas <josepvargasf@uc.cl>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8"
 gurobipy = "^9.1.2"
-pandas = "^1.2.4"
 alive-progress = "^1.6.2"
 
 [tool.poetry.dev-dependencies]

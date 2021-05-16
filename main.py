@@ -2,7 +2,7 @@ from gurobipy import Model, GRB, quicksum
 from paciente import Paciente
 from random import randint
 from alive_progress import alive_bar
-# from debug import listen
+import ray
 
 with alive_bar(23, force_tty=True) as step:
     step.text("Initializing gurobi model...")
@@ -12,7 +12,7 @@ with alive_bar(23, force_tty=True) as step:
     # Sets
     P = range(1, 131)
     U = range(1, 9)
-    F = range(1, 4)
+    F = range(1, 5)
     COV = range(1, 4)
     B = [
         {1},
@@ -38,7 +38,6 @@ with alive_bar(23, force_tty=True) as step:
     ]  # matriz
 
     D = [
-        [],
         [0, 0, 5, 40, 35, 30, 25, 25, 15],
         [0, 5, 0, 35, 30, 25, 10, 20, 10],
         [0, 40, 35, 0, 5, 20, 30, 15, 25],
@@ -94,7 +93,7 @@ with alive_bar(23, force_tty=True) as step:
             for p in P
             for u in U
             for f in F
-            for t in range(E_start[p] + 1, E_end[p] + 1)
+            for t in range(E_start[p - 1] + 1, E_end[p - 1] + 1)
         ),
         name="R2.1",
     )
@@ -106,7 +105,7 @@ with alive_bar(23, force_tty=True) as step:
             for p in P
             for u in U
             for f in F
-            for t in range(E_start[p] + 1, E_end[p] + 1)
+            for t in range(E_start[p - 1] + 1, E_end[p - 1] + 1)
         ),
         name="R2.2",
     )
@@ -117,7 +116,7 @@ with alive_bar(23, force_tty=True) as step:
         (
             quicksum(Dif[p, u, f, t] for u in U for f in F) == 2 * Z[p, t]
             for p in P
-            for t in range(E_start[p] + 1, E_end[p] + 1)
+            for t in range(E_start[p - 1] + 1, E_end[p - 1] + 1)
         ),
         name="R2.3",
     )
@@ -125,33 +124,33 @@ with alive_bar(23, force_tty=True) as step:
 
     step.text("Creating R2.4 constraint...")
     m.addConstrs(
-        (Z[p, t] == 0 for p in P for t in range(1, E_start[p] + 1)), name="R2.4"
+        (Z[p, t] == 0 for p in P for t in range(1, E_start[p - 1] + 1)), name="R2.4"
     )
     step()
 
     step.text("Creating R2.5 constraint...")
     m.addConstrs(
-        (Z[p, t] == 0 for p in P for t in range(E_end[p] + 1, T[-1] + 1)), name="R2.5"
+        (Z[p, t] == 0 for p in P for t in range(E_end[p - 1] + 1, T[-1] + 1)), name="R2.5"
     )
     step()
 
     # R3: Hay un máximo de cambios por hora
     step.text("Creating R3 constraint...")
-    m.addConstrs((quicksum(Z[p] for p in P) <= A[t] for t in T), name="R3")
+    m.addConstrs((quicksum(Z[p, t] for p in P) <= A[t] for t in T), name="R3")
     step()
 
     # R4: No se puede trasladar a los pacientes críticos
     step.text("Creating R4 constraint...")
-    m.addConstrs((S[p, t] * Z[p, t] < UMBRAL_CRITICO for p in P for t in T), name="R4")
+    m.addConstrs((S[p - 1] * Z[p, t] <= UMBRAL_CRITICO for p in P for t in T), name="R4")
     step()
 
     # R5: Un paciente puede estar en una cama no ideal
     step.text("Creating R5 constraint...")
     m.addConstrs(
         (
-            alpha[p] == 1 - quicksum(Y[p, u, f, t] for f in B[G[p]] for u in U)
+            alpha[p, t] == 1 - quicksum(Y[p, u, f, t] for f in B[G[p - 1] - 1] for u in U)
             for p in P
-            for t in range(E_start[p], E_end[p] + 1)
+            for t in range(E_start[p - 1], E_end[p - 1] + 1)
         ),
         name="R5",
     )
@@ -163,7 +162,7 @@ with alive_bar(23, force_tty=True) as step:
         (
             quicksum(Y[p, u, f, t] for u in U for f in F) == 1
             for p in P
-            for t in range(E_start[p], E_end[p] + 1)
+            for t in range(E_start[p - 1], E_end[p - 1] + 1)
         ),
         name="R6",
     )
@@ -173,7 +172,7 @@ with alive_bar(23, force_tty=True) as step:
     step.text("Creating R7 constraint...")
     m.addConstrs(
         (
-            (quicksum(Y[p, u, f, t] for f in F) for u in COV) == V[p]
+            (quicksum(Y[p, u, f, t] for f in F) for u in COV) == V[p - 1]
             for p in P
             for t in T
         ),
@@ -187,7 +186,7 @@ with alive_bar(23, force_tty=True) as step:
         (
             quicksum(Y[p, u, f, t] for u in U for f in F) == 0
             for p in P
-            for t in range(1, E_start[p])
+            for t in range(1, E_start[p - 1])
         ),
         name="R8",
     )  # no le coloca el -1 porque no es inclusivo
@@ -199,7 +198,7 @@ with alive_bar(23, force_tty=True) as step:
         (
             quicksum(Y[p, u, f, t] for u in U for f in F) == 0
             for p in P
-            for t in range(E_end[p] + 1, T[-1] + 1)
+            for t in range(E_end[p - 1] + 1, T[-1] + 1)
         ),
         name="R9",
     )  # +1 para ser inclusivo
@@ -211,7 +210,7 @@ with alive_bar(23, force_tty=True) as step:
         (
             quicksum(Y[p, u, f, t] for u in U for f in F) == 0
             for p in P
-            for t in range(E_start[p], E_end[p] + 1)
+            for t in range(E_start[p - 1], E_end[p - 1] + 1)
         ),
         name="R10",
     )
@@ -220,7 +219,7 @@ with alive_bar(23, force_tty=True) as step:
     # R11: p no puede ser trasladado más de X veces durante el día
     step.text("Creating R11 constraint...")
     m.addConstrs(
-        (quicksum(Z[p, t] for t in range(E_start[p], E_end[p] + 1)) <= 2 for p in P),
+        (quicksum(Z[p, t] for t in range(E_start[p - 1], E_end[p - 1] + 1)) <= 2 for p in P),
         name="R11",
     )
     step()
@@ -228,10 +227,10 @@ with alive_bar(23, force_tty=True) as step:
     # Objective
     step.text("Creating objective function...")
     m.setObjective(
-        quicksum(Y[p, u, f, t] * D[u][I[p]] for u in U for p in P for f in F for t in T)
+        quicksum(Y[p, u, f, t] * D[u - 1][I[p - 1] - 1] for u in U for p in P for f in F for t in T)
         * Cost[0]
-        + quicksum(Z[p, t] * (0.8 - S[p]) for p in P for t in T) * Cost[1]
-        + quicksum(alpha[p] for p in P) * Cost[2],
+        + quicksum(Z[p, t] * (0.8 - S[p - 1]) for p in P for t in T) * Cost[1]
+        + quicksum(alpha[p, t] for p in P for t in T) * Cost[2],
         GRB.MINIMIZE,
     )
     step()
