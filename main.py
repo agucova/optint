@@ -8,7 +8,6 @@ with alive_bar(23, force_tty=True) as step:
     step.text("Initializing gurobi model...")
     m = Model(name="Distribución de Camas")
     step()
-    print()
     step.text("Generating sets...")
     # Sets
     P = range(1, 131)
