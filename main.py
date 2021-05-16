@@ -2,11 +2,13 @@ from gurobipy import Model, GRB, quicksum
 from paciente import Paciente
 from random import randint
 from alive_progress import alive_bar
+# from debug import listen
 
-m = Model(name="Distribución de Camas")
-print()
-print("Constructing model...")
-with alive_bar(20) as step:
+with alive_bar(23) as step:
+    step.text("Initializing gurobi model...")
+    m = Model(name="Distribución de Camas")
+    step()
+    print()
     step.text("Generating sets...")
     # Sets
     P = range(1, 131)
@@ -239,16 +241,18 @@ with alive_bar(20) as step:
     m.update()
     step()
 
-print("Finished model creation.")
+    print("Finished model creation.")
 
-# Optimize
-print("Starting optimization.")
-m.optimize()
+    # Optimize
+    print("Starting optimization.")
+    m.optimize()
+    step()
 
-# Write results
-print("Writing results")
-m.write("out.sol")
+    # Write results
+    print("Writing results")
+    m.write("out.sol")
+    step()
 
-print("Optimization finished succesfully.")
+    print("Optimization finished succesfully.")
 
-# noqa: E741
+    # noqa: E741
