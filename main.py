@@ -2,7 +2,6 @@ from gurobipy import Model, GRB, quicksum
 from paciente import Paciente
 from random import randint
 from alive_progress import alive_bar
-import ray
 
 with alive_bar(23, force_tty=True) as step:
     step.text("Initializing gurobi model...")
@@ -241,16 +240,18 @@ with alive_bar(23, force_tty=True) as step:
 
     print("Finished model creation.")
 
-    # Optimize
-    print("Starting optimization.")
-    m.optimize()
-    step()
+    m.computeIIS()
+    m.write("iis.ilp")
+    # # Optimize
+    # print("Starting optimization.")
+    # m.optimize()
+    # step()
 
-    # Write results
-    print("Writing results")
-    m.write("out.sol")
-    step()
+    # # Write results
+    # print("Writing results")
+    # m.write("out.sol")
+    # step()
 
-    print("Optimization finished succesfully.")
+    # print("Optimization finished succesfully.")
 
-    # noqa: E741
+    # # noqa: E741
