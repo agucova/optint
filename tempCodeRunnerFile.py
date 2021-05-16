@@ -1,5 +1,4 @@
-'''
-    step.text("Creating R7 constraint...")
+step.text("Creating R7 constraint...")
     m.addConstrs(
         (
             quicksum(Y[p, u, f, t] for f in F for u in COV) == V[p - 1]
@@ -45,14 +44,3 @@
         name="R10",
     )
     step()
-'''
-start = 4
-end = 6
-for i in range(start, end + 1):
-    print(i, 'le asigno 1') # asignarle 1 
-
-for i in range(1, start):
-    print(i, 'le asigno 0') # asignarle 0
-
-for i in range(end + 1, 13):
-    print(i, 'le asigno 0') # asignarle 0 

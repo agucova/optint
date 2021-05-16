@@ -49,7 +49,8 @@ with alive_bar(23, force_tty=True) as step:
 
     UMBRAL_CRITICO = 0.8
 
-    pacientes = [Paciente() for _ in P]
+    camas_covid = sum(C[u][f] for u in COV for f in F)
+    pacientes = [Paciente(camas_covid) for _ in P]
 
     G = [paciente.g for paciente in pacientes]
     I = [paciente.i for paciente in pacientes]
@@ -60,6 +61,17 @@ with alive_bar(23, force_tty=True) as step:
     A = {index: randint(0, 5) for index in T}  # hay que editarlo
     Cost = [10, 7, 2]  # TODO: Definir costos
     step()
+
+    print(V[34 - 1])
+    print('primer for:')
+    for t in range(E_start[34 - 1], E_end[34 - 1] + 1):
+        print(t)
+
+    print('segundo for:')
+    for t in range(E_end[34 - 1] + 1, T[-1] + 1):
+        print(t)
+
+    
 
     # Variables
     step.text("Creating variables...")
@@ -157,23 +169,23 @@ with alive_bar(23, force_tty=True) as step:
 
     # R6: Un paciente p no puede estar en 2 unidades y/o 2 tipos de cama al mismo tiempo.
     step.text("Creating R6 constraint...")
-    m.addConstrs(
-        (
-            quicksum(Y[p, u, f, t] for u in U for f in F) == 1
-            for p in P
-            for t in range(E_start[p - 1], E_end[p - 1] + 1)
-        ),
-        name="R6",
-    )
+    # m.addConstrs(
+    #     (
+    #         quicksum(Y[p, u, f, t] for u in U for f in F) == 1
+    #         for p in P
+    #         for t in range(E_start[p - 1], E_end[p - 1] + 1)
+    #     ),
+    #     name="R6",
+    # )
     step()
 
     # R7: Si p es COVID-19 positivo, solo puede ser asignado a una unidad COVID-19.
     step.text("Creating R7 constraint...")
     m.addConstrs(
         (
-            (quicksum(Y[p, u, f, t] for f in F) for u in COV) == V[p - 1]
+            quicksum(Y[p, u, f, t] for f in F for u in COV) == V[p - 1]
             for p in P
-            for t in T
+            for t in range(E_start[p - 1], E_end[p - 1] + 1)
         ),
         name="R7",
     )
@@ -191,7 +203,7 @@ with alive_bar(23, force_tty=True) as step:
     )  # no le coloca el -1 porque no es inclusivo
     step()
 
-    # R9: Después d salir, p no tendrá asignada una cama
+    # R9: Después de salir, p no tendrá asignada una cama
     step.text("Creating R9 constraint...")
     m.addConstrs(
         (
@@ -207,7 +219,7 @@ with alive_bar(23, force_tty=True) as step:
     step.text("Creating R10 constraint...")
     m.addConstrs(
         (
-            quicksum(Y[p, u, f, t] for u in U for f in F) == 0
+            quicksum(Y[p, u, f, t] for u in U for f in F) == 1
             for p in P
             for t in range(E_start[p - 1], E_end[p - 1] + 1)
         ),
@@ -215,7 +227,7 @@ with alive_bar(23, force_tty=True) as step:
     )
     step()
 
-    # R11: p no puede ser trasladado más de X veces durante el día
+    # R11: p no puede ser trasladado más de 2 veces durante el día
     step.text("Creating R11 constraint...")
     m.addConstrs(
         (quicksum(Z[p, t] for t in range(E_start[p - 1], E_end[p - 1] + 1)) <= 2 for p in P),
