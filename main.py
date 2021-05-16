@@ -30,6 +30,7 @@ E_end = [paciente.e_end for paciente in pacientes]
 V = [paciente.v for paciente in pacientes]
 S = [paciente.s for paciente in pacientes]
 A = {index: randint(0, 5) for index in T}  # hay que editarlo
+Cost = [c1, c2, c3] # TODO: Definir distancias
 
 
 # Variables
@@ -167,6 +168,13 @@ m.addConstrs(
 
 
 # m.setObjective(w, GRB.MINIMIZE)
+m.setObjective(
+    quicksum(Y[p, u, f, t] * D[u, I[p]] for u in U for p in P for f in F for t in T) * Cost[0] +
+    quicksum(Z[p, t] * (0.8 - S[p]) for p in P for t in T) * Cost[1] +
+    quicksum(alpha[p] for p in P) * Cost[2], 
+    GRB.MINIMIZE
+)
+
 
 # Optimize
 m.optimize()
