@@ -54,7 +54,7 @@ with alive_bar(23, force_tty=True) as step:
 
     camas_covid = sum(C[u][f] for u in COV for f in F)
     pacientes = [Paciente(camas_covid) for _ in P]
-
+    
     G = [paciente.g for paciente in pacientes]
     I = [paciente.i for paciente in pacientes]
     E_start = [paciente.e_start for paciente in pacientes]
@@ -62,7 +62,7 @@ with alive_bar(23, force_tty=True) as step:
     V = [paciente.v for paciente in pacientes]
     S = [paciente.s for paciente in pacientes]
     A = {index: randint(0, 5) for index in T}  # hay que editarlo
-    Cost = [0, 7, 2000]  # TODO: Definir costos, 0 
+    Cost = [10, 7, 2]  # TODO: Definir costos, 0 
     step()
     
 

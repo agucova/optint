@@ -11,7 +11,7 @@ def metricas(D, I, n_pacientes):
                 lista.append(linea)
                 u = int(linea[0].split('[')[1].split(',')[1].strip(']'))
                 p = int(linea[0].split('[')[1].split(',')[0])
-
+                
                 if 'alpha' in linea[0]:
                     not_ideal += 1
                 
