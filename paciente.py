@@ -8,6 +8,7 @@ class Contador:
 
 class Paciente:
     pacientes_covid = Contador()
+    
 
     def __init__(self, camas_covid):
         self.cov = choices([True, False], weights=[0.4466019417, 1 - 0.4466019417])[
@@ -31,7 +32,7 @@ class Paciente:
         self.unidad_ideal = choices(
             [1, 2, 3, 4, 5, 6, 7, 8],
             weights=[
-                0.3312892185,
+                0.3312892185, # deberiamos considerar la gente que estaba de antes
                 0.07615516258,
                 0.2114945807,
                 0.0463491158,
@@ -68,7 +69,7 @@ class Paciente:
         ]
 
         self.salida = choices(
-            range(1, 13), weights=[0, 0, 0.2, 0.2, 0.2, 0.2, 0.2, 0, 0, 0, 0, 0]
+            range(1, 13), weights=[0, 0, 0.2, 0.2, 0.2, 0.2, 0.2, 0, 0, 0, 0, 0] # considerar la gente que se queda
         )[
             0
         ]  # entero entre 1 y 13, entrada < salida

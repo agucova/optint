@@ -2,14 +2,17 @@ from gurobipy import Model, GRB, quicksum
 from paciente import Paciente
 from random import randint
 from alive_progress import alive_bar
+from metricas import metricas
 
 with alive_bar(23, force_tty=True) as step:
     step.text("Initializing gurobi model...")
     m = Model(name="Distribución de Camas")
     step()
     step.text("Generating sets...")
+
+    n_pacientes = 170
     # Sets
-    P = range(1, 131)
+    P = range(1, n_pacientes + 1)
     U = range(1, 9)
     F = range(1, 5)
     COV = range(1, 4)
@@ -37,14 +40,14 @@ with alive_bar(23, force_tty=True) as step:
     ]  # matriz
 
     D = [
-        [0, 0, 5, 40, 35, 30, 25, 25, 15],
-        [0, 5, 0, 35, 30, 25, 10, 20, 10],
-        [0, 40, 35, 0, 5, 20, 30, 15, 25],
-        [0, 35, 30, 5, 0, 15, 25, 10, 20],
-        [0, 30, 25, 20, 15, 0, 15, 25, 35],
-        [0, 25, 10, 30, 25, 15, 0, 15, 20],
-        [0, 25, 20, 15, 10, 25, 15, 0, 10],
-        [0, 15, 10, 25, 20, 35, 20, 10, 0],
+        [0, 5, 40, 35, 30, 25, 25, 15],
+        [5, 0, 35, 30, 25, 10, 20, 10],
+        [40, 35, 0, 5, 20, 30, 15, 25],
+        [35, 30, 5, 0, 15, 25, 10, 20],
+        [30, 25, 20, 15, 0, 15, 25, 35],
+        [25, 10, 30, 25, 15, 0, 15, 20],
+        [25, 20, 15, 10, 25, 15, 0, 10],
+        [15, 10, 25, 20, 35, 20, 10, 0],
     ]  # matriz
 
     UMBRAL_CRITICO = 0.8
@@ -59,18 +62,8 @@ with alive_bar(23, force_tty=True) as step:
     V = [paciente.v for paciente in pacientes]
     S = [paciente.s for paciente in pacientes]
     A = {index: randint(0, 5) for index in T}  # hay que editarlo
-    Cost = [10, 7, 2]  # TODO: Definir costos
+    Cost = [0, 7, 2000]  # TODO: Definir costos, 0 
     step()
-
-    print(V[34 - 1])
-    print('primer for:')
-    for t in range(E_start[34 - 1], E_end[34 - 1] + 1):
-        print(t)
-
-    print('segundo for:')
-    for t in range(E_end[34 - 1] + 1, T[-1] + 1):
-        print(t)
-
     
 
     # Variables
@@ -252,17 +245,18 @@ with alive_bar(23, force_tty=True) as step:
 
     print("Finished model creation.")
 
-    m.computeIIS()
-    m.write("iis.ilp")
+    # m.computeIIS()
+    # m.write("iis.ilp")
     # # Optimize
-    # print("Starting optimization.")
-    # m.optimize()
-    # step()
+    print("Starting optimization.")
+    m.optimize()
+    step()
 
-    # # Write results
-    # print("Writing results")
-    # m.write("out.sol")
-    # step()
+    # Write results
+    print("Writing results")
+    m.write("out.sol")
+    step()
+    metricas(D, I, n_pacientes) 
 
     # print("Optimization finished succesfully.")
 
