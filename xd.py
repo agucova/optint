@@ -1,58 +1,16 @@
-'''
-    step.text("Creating R7 constraint...")
-    m.addConstrs(
-        (
-            quicksum(Y[p, u, f, t] for f in F for u in COV) == V[p - 1]
-            for p in P
-            for t in range(E_start[p - 1], E_end[p - 1] + 1)
-        ),
-        name="R7",
-    )
-    step()
+import csv
+from itertools import dropwhile, takewhile
 
-    # R8: Antes de entrar p nno tienne asignada una cama
-    step.text("Creating R8 constraint...")
-    m.addConstrs(
-        (
-            quicksum(Y[p, u, f, t] for u in U for f in F) == 0
-            for p in P
-            for t in range(1, E_start[p - 1])
-        ),
-        name="R8",
-    )  # no le coloca el -1 porque no es inclusivo
-    step()
+def getstuff(filename, criterion):
+    with open(filename, "rb") as csvfile:
+        datareader = csv.reader(csvfile)
+        yield next(datareader)  # yield the header row
+        # first row, plus any subsequent rows that match, then stop
+        # reading altogether
+        # Python 2: use `for row in takewhile(...): yield row` instead
+        # instead of `yield from takewhile(...)`.
+        yield from takewhile(
+            lambda r: r[3] == criterion,
+            dropwhile(lambda r: r[3] != criterion, datareader))
+        return
 
-    # R9: Después d salir, p no tendrá asignada una cama
-    step.text("Creating R9 constraint...")
-    m.addConstrs(
-        (
-            quicksum(Y[p, u, f, t] for u in U for f in F) == 0
-            for p in P
-            for t in range(E_end[p - 1] + 1, T[-1] + 1)
-        ),
-        name="R9",
-    )  # +1 para ser inclusivo
-    step()
-
-    # R10: Mientras esté en el hospital, p siempre tiene asignado 1 cama
-    step.text("Creating R10 constraint...")
-    m.addConstrs(
-        (
-            quicksum(Y[p, u, f, t] for u in U for f in F) == 1
-            for p in P
-            for t in range(E_start[p - 1], E_end[p - 1] + 1)
-        ),
-        name="R10",
-    )
-    step()
-'''
-start = 4
-end = 6
-for i in range(start, end + 1):
-    print(i, 'le asigno 1') # asignarle 1 
-
-for i in range(1, start):
-    print(i, 'le asigno 0') # asignarle 0
-
-for i in range(end + 1, 13):
-    print(i, 'le asigno 0') # asignarle 0 
