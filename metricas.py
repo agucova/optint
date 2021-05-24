@@ -8,6 +8,7 @@ def metricas(D, I, n_pacientes, B, G):
         distancia_total = 0
         pacientes_por_hora = [0]*12
         no_ideales_por_hora = [0]*12
+        cambios_por_hora = [0]*12
         # digo cual es su cama si no lo he registrado
         Y = {}
 
@@ -22,6 +23,7 @@ def metricas(D, I, n_pacientes, B, G):
                 
                 if 'alpha' in linea[0]:
                     not_ideal += 1
+                    cambios_por_hora[t] += 1
                 
                 if 'Z' in linea[0]:
                     cambios_cama += 1
@@ -44,7 +46,6 @@ def metricas(D, I, n_pacientes, B, G):
         # print(f"Pacientes en camas no ideales en un inicio: {no_ideales_inicio}")
         # print(f"Pacientes en camas ideales en el final: {no_ideales_final}")
 
-        print(f"Hay {not_ideal/12} ({round(not_ideal / (n_pacientes * 12) * 100, 3)}%) pacientes en camas no ideales.")
         print("Número de cambios de cama:", cambios_cama)
         print("Distancia total:", distancia_total)
         print(
@@ -52,9 +53,9 @@ def metricas(D, I, n_pacientes, B, G):
             "Resultados por hora".center(60),
             "-"*60,
             "",
-            ' '*18 + "Pacientes   Camas no ideales",
+            ' '*18 + "Pacientes   Camas no ideales    Cambios por hora",
             '\n'.join(
-                f"Horas [{2*i: <2d}, {2*(i+1): >2d}]: {paciente: >10d}, {no_ideales_por_hora[i]: >12d}" 
+                f"Horas [{2*i: <2d}, {2*(i+1): >2d}]: {paciente: >10d}, {no_ideales_por_hora[i]: >10d}, {cambios_por_hora[i]: >12d}" 
                 for i, paciente in enumerate(pacientes_por_hora)
             ),
             sep='\n'

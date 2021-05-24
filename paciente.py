@@ -45,31 +45,60 @@ class Paciente:
         ]  # entero
 
         # TODO: se dejo para probar
-        self.severidad = uniform(0, 1)  # float
+        self.severidad = choices(
+            range(1, 11),
+            weights=[
+                3,
+                5,
+                6,
+                4,
+                3,
+                2,
+                3,
+                1,
+                2,
+                1
+            ],
+        )[
+            0
+        ] 
 
         self.entrada = choices(
             range(12),
             weights=[
-                0.04464285714, # TODO: Ajustar por primer día
-                0.04464285714,
-                0.04464285714,
-                0.03571428571,
-                0.0625,
-                0.09821428571,
-                0.1160714286,
-                0.1830357143,
-                0.07589285714,
-                0.125,
-                0.08928571429,
-                0.08035714286,
+                83.6,
+                0.8,
+                0.8,
+                0.6,
+                1.1,
+                1.7,
+                2.0,
+                3.1,
+                1.3,
+                2.2,
+                1.5,
+                1.4
             ],
         )[
             0
         ]
 
-        # TODO: la gente no muere
         self.salida = choices(
-            range(12), weights=[0, 0, 0, 0, 0, 0.2, 0.2, 0.2, 0.2, 0.2, 0, 0] # considerar la gente que se queda
+            range(12), 
+            weights=[
+                0.00,
+                0.00,
+                0.00,
+                0.00,
+                5.16,
+                5.16,
+                1.72,
+                1.03,
+                1.03,
+                1.03,
+                1.03,
+                83.83
+            ], 
         )[
             0
         ]  # entero entre 1 y 13, entrada < salida
@@ -77,18 +106,18 @@ class Paciente:
             self.entrada = choices(
                 range(12),
                 weights=[
-                    0.04464285714, # TODO: Ajustar por primer día
-                    0.04464285714,
-                    0.04464285714,
-                    0.03571428571,
-                    0.0625,
-                    0.09821428571,
-                    0.1160714286,
-                    0.1830357143,
-                    0.07589285714,
-                    0.125,
-                    0.08928571429,
-                    0.08035714286,
+                    83.6,
+                    0.8,
+                    0.8,
+                    0.6,
+                    1.1,
+                    1.7,
+                    2.0,
+                    3.1,
+                    1.3,
+                    2.2,
+                    1.5,
+                    1.4
                 ],
             )[
                 0
