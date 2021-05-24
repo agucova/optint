@@ -56,10 +56,11 @@ I = [paciente.i for paciente in pacientes]
 E_start = [paciente.e_start for paciente in pacientes]
 E_end = [paciente.e_end for paciente in pacientes]
 V = [paciente.v for paciente in pacientes]
-S = [paciente.s for paciente in pacientes]
-A = {index: randint(0, 3) for index in T}  # Arbitrario para el centro
+S = [paciente.s for paciente in pacientes]  # Arbitrario para el centro
+A = [0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 1, 1]
+#    0, 2, 4, 6, 8,10,12,14,16,18,20,22
 Q = 8
-Cost = [5, 3, 5]  # TODO: Definir costos
+Cost = [10, 3, 5]  # TODO: Definir costos
 
 
 # Variables
