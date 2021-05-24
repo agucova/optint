@@ -23,6 +23,7 @@ def metricas(D, I, n_pacientes, B, G):
                 
                 if 'alpha' in linea[0]:
                     not_ideal += 1
+                    cambios_por_hora[t] += 1
                 
                 if 'Z' in linea[0]:
                     cambios_cama += 1

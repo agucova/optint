@@ -6,7 +6,7 @@ from metricas import metricas
 m = Model(name="Distribución de Camas")
 
 # 122 es el máximo factible que corre, no arreglamos los datos para obtener este resultado xD 
-# El número máximo de pacientes en un día es de 122 a lo largo del 2020 ()
+# El número máximo de pacientes en un día es de 122 a lo largo del 2020
 # El número mínimo de pacientes en un día es de 27
 # Promedio de pacientes por día es de 94
 n_pacientes = 94
