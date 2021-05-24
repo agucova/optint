@@ -23,13 +23,13 @@ class Paciente:
 
 
         self.cama_ideal = choices(
-            [1, 2, 3, 4], weights=[0.1941747573, 0.145631068, 0.145631068, 0.5145631068]
+            range(4), weights=[0.1941747573, 0.145631068, 0.145631068, 0.5145631068]
         )[
             0
         ]  # entero
 
         self.unidad_ideal = choices(
-            [1, 2, 3, 4, 5, 6, 7, 8],
+            range(8),
             weights=[
                 0.3312892185,
                 0.07615516258,
@@ -48,7 +48,7 @@ class Paciente:
         self.severidad = uniform(0, 1)  # float
 
         self.entrada = choices(
-            range(1, 13),
+            range(12),
             weights=[
                 0.04464285714, # TODO: Ajustar por primer día
                 0.04464285714,
@@ -69,13 +69,13 @@ class Paciente:
 
         # TODO: la gente no muere
         self.salida = choices(
-            range(1, 13), weights=[0, 0, 0, 0, 0, 0.2, 0.2, 0.2, 0.2, 0.2, 0, 0] # considerar la gente que se queda
+            range(12), weights=[0, 0, 0, 0, 0, 0.2, 0.2, 0.2, 0.2, 0.2, 0, 0] # considerar la gente que se queda
         )[
             0
         ]  # entero entre 1 y 13, entrada < salida
         while self.salida < self.entrada:
             self.entrada = choices(
-                range(1, 13),
+                range(12),
                 weights=[
                     0.04464285714, # TODO: Ajustar por primer día
                     0.04464285714,

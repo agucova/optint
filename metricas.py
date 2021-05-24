@@ -1,16 +1,24 @@
-def metricas(D, I, n_pacientes):
-    with open('out.sol') as csv:
-        aux = list(csv.readlines())
+def metricas(D, I, n_pacientes, B, G):
+    with open('out.sol', encoding='utf-8') as csv:
+        aux = list(csv.readlines())[2:]
         aux = [linea.strip('\n').split(' ') for linea in aux]
         lista = []
         not_ideal = 0
         cambios_cama = 0
         distancia_total = 0
+        pacientes_por_hora = [0]*12
+        no_ideales_por_hora = [0]*12
+        # digo cual es su cama si no lo he registrado
+        Y = {}
+
         for linea in aux:
             if linea[1] == '1':
                 lista.append(linea)
-                u = int(linea[0].split('[')[1].split(',')[1].strip(']'))
-                p = int(linea[0].split('[')[1].split(',')[0])
+                index = list(map(int, linea[0].split('[')[1].strip(']').split(',')))
+                if len(index) == 4:
+                    p, u, f, t = index
+                else:
+                    p, u = index
                 
                 if 'alpha' in linea[0]:
                     not_ideal += 1
@@ -19,8 +27,35 @@ def metricas(D, I, n_pacientes):
                     cambios_cama += 1
                 
                 if 'Y' in linea[0]:
-                    distancia_total += D[u - 1][I[p - 1] - 1]
+                    distancia_total += D[u][I[p]]
+                    pacientes_por_hora[t] += 1
+                    no_ideales_por_hora[t] += 1 if f not in B[G[p]] else 0
+                    # print(f"Y[{p}, {u}, {f}, {t}]")
+                    if p not in Y:
+                        Y[p] = (f, f)
+
+                    Y[p] = (Y[p][0], f)
+        
+        no_ideales_inicio, no_ideales_final = 0, 0
+        for p in Y:
+            no_ideales_inicio += 1 if Y[p][0] not in B[G[p]] else 0
+            no_ideales_final += 1 if Y[p][1] not in B[G[p]] else 0
+                    
+        # print(f"Pacientes en camas no ideales en un inicio: {no_ideales_inicio}")
+        # print(f"Pacientes en camas ideales en el final: {no_ideales_final}")
 
         print(f"Hay {not_ideal/12} ({round(not_ideal / (n_pacientes * 12) * 100, 3)}%) pacientes en camas no ideales.")
         print("Número de cambios de cama:", cambios_cama)
         print("Distancia total:", distancia_total)
+        print(
+            "_"*60,
+            "Resultados por hora".center(60),
+            "-"*60,
+            "",
+            ' '*18 + "Pacientes   Camas no ideales",
+            '\n'.join(
+                f"Horas [{2*i: <2d}, {2*(i+1): >2d}]: {paciente: >10d}, {no_ideales_por_hora[i]: >12d}" 
+                for i, paciente in enumerate(pacientes_por_hora)
+            ),
+            sep='\n'
+        )

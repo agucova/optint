@@ -4,39 +4,40 @@ from random import randint
 from alive_progress import alive_bar
 from metricas import metricas
 
-with alive_bar(23, force_tty=True) as step:
+with alive_bar(22, force_tty=True, enrich_print=False) as step:
     step.text("Initializing gurobi model...")
     m = Model(name="Distribución de Camas")
     step()
     step.text("Generating sets...")
-
-    n_pacientes = 170
+    
+    # 145 es el máximo factible
+    n_pacientes = 100
+    
     # Sets
-    P = range(1, n_pacientes + 1)
-    U = range(1, 9)
-    F = range(1, 5)
-    COV = range(1, 4)
+    P = range(n_pacientes)
+    U = range(8)
+    F = range(4)
+    COV = range(3)
     B = [
-        {1},
-        {1, 2},
-        {1, 2, 3},
-        {1, 2, 3, 4},
+        {0},
+        {0, 1},
+        {0, 1, 2},
+        {0, 1, 2, 3},
     ]  # rellenar sea el caso
-    T = range(1, 13)
+    T = range(12)
     step()
 
     step.text("Generating parameters...")
     # Parámetros
     C = [
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 38],
-        [0, 0, 0, 30, 0],
-        [0, 3, 3, 0, 0],
-        [0, 0, 0, 12, 0],
-        [0, 1, 1, 0, 8],
-        [0, 0, 0, 0, 7],
-        [0, 9, 9, 0, 0],
-        [0, 7, 2, 0, 0],
+        [0, 0, 0, 38],
+        [0, 0, 30, 0],
+        [3, 3, 0, 0],
+        [0, 0, 12, 0],
+        [1, 1, 0, 8],
+        [0, 0, 0, 7],
+        [9, 9, 0, 0],
+        [7, 2, 0, 0],
     ]  # matriz
 
     D = [
@@ -62,7 +63,7 @@ with alive_bar(23, force_tty=True) as step:
     V = [paciente.v for paciente in pacientes]
     S = [paciente.s for paciente in pacientes]
     A = {index: randint(0, 5) for index in T}  # hay que editarlo
-    Cost = [10, 7, 2]  # TODO: Definir costos, 0 
+    Cost = [-5, -3, -3]  # TODO: Definir costos, 0 
     step()
     
 
@@ -97,7 +98,7 @@ with alive_bar(23, force_tty=True) as step:
             for p in P
             for u in U
             for f in F
-            for t in range(E_start[p - 1] + 1, E_end[p - 1] + 1)
+            for t in range(E_start[p] + 1, E_end[p] + 1)
         ),
         name="R2.1",
     )
@@ -109,7 +110,7 @@ with alive_bar(23, force_tty=True) as step:
             for p in P
             for u in U
             for f in F
-            for t in range(E_start[p - 1] + 1, E_end[p - 1] + 1)
+            for t in range(E_start[p] + 1, E_end[p] + 1)
         ),
         name="R2.2",
     )
@@ -120,7 +121,7 @@ with alive_bar(23, force_tty=True) as step:
         (
             quicksum(Dif[p, u, f, t] for u in U for f in F) == 2 * Z[p, t]
             for p in P
-            for t in range(E_start[p - 1] + 1, E_end[p - 1] + 1)
+            for t in range(E_start[p] + 1, E_end[p] + 1)
         ),
         name="R2.3",
     )
@@ -128,13 +129,13 @@ with alive_bar(23, force_tty=True) as step:
 
     step.text("Creating R2.4 constraint...")
     m.addConstrs(
-        (Z[p, t] == 0 for p in P for t in range(1, E_start[p - 1] + 1)), name="R2.4"
+        (Z[p, t] == 0 for p in P for t in range(E_start[p] + 1)), name="R2.4"
     )
     step()
 
     step.text("Creating R2.5 constraint...")
     m.addConstrs(
-        (Z[p, t] == 0 for p in P for t in range(E_end[p - 1] + 1, T[-1] + 1)), name="R2.5"
+        (Z[p, t] == 0 for p in P for t in range(E_end[p] + 1, T[-1] + 1)), name="R2.5"
     )
     step()
 
@@ -152,78 +153,66 @@ with alive_bar(23, force_tty=True) as step:
     step.text("Creating R5 constraint...")
     m.addConstrs(
         (
-            alpha[p, t] == 1 - quicksum(Y[p, u, f, t] for f in B[G[p - 1] - 1] for u in U)
+            alpha[p, t] == 1 - quicksum(Y[p, u, f, t] for f in B[G[p]] for u in U)
             for p in P
-            for t in range(E_start[p - 1], E_end[p - 1] + 1)
+            for t in range(E_start[p], E_end[p] + 1)
         ),
         name="R5",
     )
     step()
 
-    # R6: Un paciente p no puede estar en 2 unidades y/o 2 tipos de cama al mismo tiempo.
-    step.text("Creating R6 constraint...")
-    # m.addConstrs(
-    #     (
-    #         quicksum(Y[p, u, f, t] for u in U for f in F) == 1
-    #         for p in P
-    #         for t in range(E_start[p - 1], E_end[p - 1] + 1)
-    #     ),
-    #     name="R6",
-    # )
-    step()
-
-    # R7: Si p es COVID-19 positivo, solo puede ser asignado a una unidad COVID-19.
+    # R6: Si p es COVID-19 positivo, solo puede ser asignado a una unidad COVID-19.
     step.text("Creating R7 constraint...")
     m.addConstrs(
         (
             quicksum(Y[p, u, f, t] for f in F for u in COV) == V[p - 1]
             for p in P
-            for t in range(E_start[p - 1], E_end[p - 1] + 1)
+            for t in range(E_start[p], E_end[p] + 1)
         ),
         name="R7",
     )
     step()
 
-    # R8: Antes de entrar p nno tienne asignada una cama
+    # R7: Antes de entrar p no tiene asignada una cama
     step.text("Creating R8 constraint...")
     m.addConstrs(
         (
             quicksum(Y[p, u, f, t] for u in U for f in F) == 0
             for p in P
-            for t in range(1, E_start[p - 1])
+            for t in range(E_start[p])
         ),
         name="R8",
-    )  # no le coloca el -1 porque no es inclusivo
+    )
     step()
 
-    # R9: Después de salir, p no tendrá asignada una cama
+    # R8: Después de salir, p no tendrá asignada una cama
     step.text("Creating R9 constraint...")
     m.addConstrs(
         (
             quicksum(Y[p, u, f, t] for u in U for f in F) == 0
             for p in P
-            for t in range(E_end[p - 1] + 1, T[-1] + 1)
+            for t in range(E_end[p] + 1, T[-1] + 1)
         ),
         name="R9",
     )  # +1 para ser inclusivo
     step()
 
-    # R10: Mientras esté en el hospital, p siempre tiene asignado 1 cama
+    # R9: Mientras esté en el hospital, p siempre tiene asignado 1 cama
     step.text("Creating R10 constraint...")
     m.addConstrs(
         (
             quicksum(Y[p, u, f, t] for u in U for f in F) == 1
             for p in P
-            for t in range(E_start[p - 1], E_end[p - 1] + 1)
+            for t in range(E_start[p], E_end[p] + 1)
         ),
         name="R10",
     )
     step()
 
-    # R11: p no puede ser trasladado más de 2 veces durante el día
+    # R10: p no puede ser trasladado más de 2 veces durante el día
     step.text("Creating R11 constraint...")
     m.addConstrs(
-        (quicksum(Z[p, t] for t in range(E_start[p - 1], E_end[p - 1] + 1)) <= 2 for p in P),
+        (quicksum(Z[p, t] for t in range(E_start[p], E_end[p] + 1)) <= 2 for p in P),
         name="R11",
     )
     step()
@@ -231,9 +220,9 @@ with alive_bar(23, force_tty=True) as step:
     # Objective
     step.text("Creating objective function...")
     m.setObjective(
-        quicksum(Y[p, u, f, t] * D[u - 1][I[p - 1] - 1] for u in U for p in P for f in F for t in T)
+        quicksum(Y[p, u, f, t] * D[u][I[p]] for u in U for p in P for f in F for t in T)
         * Cost[0]
-        + quicksum(Z[p, t] * (0.8 - S[p - 1]) for p in P for t in T) * Cost[1]
+        + quicksum(Z[p, t] * (0.8 - S[p]) for p in P for t in T) * Cost[1]
         + quicksum(alpha[p, t] for p in P for t in T) * Cost[2],
         GRB.MINIMIZE,
     )
@@ -245,8 +234,8 @@ with alive_bar(23, force_tty=True) as step:
 
     print("Finished model creation.")
 
-    # m.computeIIS()
-    # m.write("iis.ilp")
+    # m.computeIIS() -> En caso de ser infactible se escribe en el archivo iis.ilp donde es infactible
+    # m.write("archivo/iis.ilp") -> Acá lo escribe, se deben descomentar ambas lineas para verlo
     # # Optimize
     print("Starting optimization.")
     m.optimize()
@@ -256,7 +245,7 @@ with alive_bar(23, force_tty=True) as step:
     print("Writing results")
     m.write("out.sol")
     step()
-    metricas(D, I, n_pacientes) 
+    metricas(D, I, n_pacientes, B, G) 
 
     # print("Optimization finished succesfully.")
 
