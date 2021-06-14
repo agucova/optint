@@ -1,4 +1,4 @@
-def metricas(D, I, n_pacientes, B, G):
+        def metricas(D, I, n_pacientes, B, G):
     with open('out.sol', encoding='utf-8') as csv:
         aux = list(csv.readlines())[2:]
         aux = [linea.strip('\n').split(' ') for linea in aux]
