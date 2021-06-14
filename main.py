@@ -21,7 +21,7 @@ B = [
     {0, 1},
     {0, 1, 2},
     {0, 1, 2, 3},
-]  # rellenar sea el caso
+]
 T = range(12)
 
 # Parámetros
