@@ -1,5 +1,5 @@
-        def metricas(D, I, n_pacientes, B, G):
-    with open('out.sol', encoding='utf-8') as csv:
+def metricas(D, I, n_pacientes, B, G, Cost):
+    with open(f"results/out_{Cost[0]}_{Cost[1]}_{Cost[2]}.sol", encoding='utf-8') as csv:
         aux = list(csv.readlines())[2:]
         aux = [linea.strip('\n').split(' ') for linea in aux]
         lista = []
