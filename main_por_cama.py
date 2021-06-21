@@ -73,7 +73,7 @@ Cama = [index for i in C for index, j in enumerate(i) for _ in range(j)]
 # Unidad
 Uni = [index  for index, i in enumerate(C) for j in i for _ in range(j)]
 
-Aux = { (p, i): bool(Cama[i] in B[G[p]]) for i in N for p in range(n_pacientes) }
+Aux = { (p, i): int(bool(Cama[i] in B[G[p]])) for i in N for p in range(n_pacientes) }
 
 COV = [i for i in N if Uni[i] in COV]
 
@@ -136,7 +136,7 @@ m.addConstrs(
 # R6: Si p es COVID-19 positivo, solo puede ser asignado a una unidad COVID-19.
 m.addConstrs(
     (
-        quicksum(Y[p, i, t] for i in COV) == V[p - 1]
+        quicksum(Y[p, i, t] for i in COV) == V[p]
         for p in P
         for t in range(E_start[p], E_end[p] + 1)
     ),
@@ -179,6 +179,7 @@ m.addConstrs(
     name="R10",
 )
 
+# R11: un paciente máximo por cama
 m.addConstrs(
     (
         quicksum(Y[p, i, t] for p in P) <= 1
@@ -187,6 +188,8 @@ m.addConstrs(
     ),
     name="R11"
 )
+
+
 
 # Objective
 m.setObjective(

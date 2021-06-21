@@ -118,7 +118,7 @@ def computeModel(Cost):
     m.addConstrs((quicksum(Z[p, t] for p in P) <= A[t] for t in T), name="R3")
 
     # R4: No se puede trasladar a los pacientes críticos
-    m.addConstrs((S[p - 1] * Z[p, t] <= Q for p in P for t in T), name="R4")
+    m.addConstrs((S[p] * Z[p, t] <= Q for p in P for t in T), name="R4")
 
     # R5: Un paciente puede estar en una cama no ideal
     m.addConstrs(
@@ -133,7 +133,7 @@ def computeModel(Cost):
     # R6: Si p es COVID-19 positivo, solo puede ser asignado a una unidad COVID-19.
     m.addConstrs(
         (
-            quicksum(Y[p, u, f, t] for f in F for u in COV) == V[p - 1]
+            quicksum(Y[p, u, f, t] for f in F for u in COV) == V[p]
             for p in P
             for t in range(E_start[p], E_end[p] + 1)
         ),
@@ -189,8 +189,8 @@ def computeModel(Cost):
 
     print("Finished model creation.")
 
-    # m.computeIIS() -> En caso de ser infactible se escribe en el archivo iis.ilp donde es infactible
-    # m.write("archivo/iis.ilp") -> Acá lo escribe, se deben descomentar ambas lineas para visualizarlo
+    # m.computeIIS()  # En caso de ser infactible se escribe en el archivo iis.ilp donde es infactible
+    # m.write("archivo/iis.ilp")  # Acá lo escribe, se deben descomentar ambas lineas para visualizarlo
     # # Optimize
     print("Starting optimization.")
     m.optimize()
@@ -200,14 +200,14 @@ def computeModel(Cost):
     m.write(f"results/out_{Cost[0]}_{Cost[1]}_{Cost[2]}.sol")
 
     metricas(D, I, n_pacientes, B, G, Cost)
-
-    # print("Optimization finished succesfully.")
+    print("Optimization finished succesfully.")
 
     # # noqa: E741
 
+computeModel([10, 3, 5])
 
-for i in range(1,11):
-    for j in range(1,11):
-        for k in range(1,11):
-            computeModel([i,j,k])
+# for i in range(1,11):
+#     for j in range(1,11):
+#         for k in range(1,11):
+#             computeModel([i,j,k])
             
