@@ -3,7 +3,7 @@ from typing import List
 
 from gurobipy import GRB, Model, quicksum, Env
 
-from metrics import metrics
+from metricas_rorro import metrics
 from paciente import Paciente
 from parameters import gen_patients
 
@@ -139,7 +139,7 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int]) -> dict:
             name="R6",
         )
 
-        # R7: Si p es COVID-19 positivo, solo puede ser asignado a una cama COVID-19.
+        # R7: Si p es COVID-19 positivo, solo puede ser asignado a una unidad COVID-19.
         m.addConstrs(
             (
                 quicksum(Y[p, i, t] for i in COV) == V[p]
@@ -202,41 +202,13 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int]) -> dict:
 
         if m.status is GRB.OPTIMAL:
             m.write("out_cama.sol")
-            return metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T)
-        return None, {"status": m.status}
+            return metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_end)
+        return {"status": m.status}
 
 
 if __name__ == "__main__":
     # Analisis de mejores y peores soluciones para cada caso
     print("Objetivo 1")
-    general_metrics, metrics_by_block = optimize_beds(130, 100, [-1, 0, 0])
-    print(general_metrics)
-    # Peor caso: 3E4 aprox / 2.75E4
-    # {'total_distance': 27585, 'beds_changed': 18, 'not_ideal': 339, 'status': 2, 'objetivo_1': 27585.0, 'objetivo_2': 71.0, 'objetivo_3': 339.0}
+    metricas = optimize_beds(130, 94, [10, 5, 7])
+    # print(metricas)
     
-    general_metrics, metrics_by_block = optimize_beds(130, 100, [1, 0, 0])
-    print(general_metrics)
-    # Mejor caso: 8.3E3
-    # {'total_distance': 8365, 'beds_changed': 20, 'not_ideal': 330, 'status': 2, 'objetivo_1': 8365.0, 'objetivo_2': 69.0, 'objetivo_3': 330.0}
- 
-    print("Objetivo 2")
-    general_metrics, metrics_by_block = optimize_beds(130, 100, [0, -1, 0])
-    print(general_metrics)
-    # Peor caso: 1.290000000000e+02
-    # {'total_distance': 20495, 'beds_changed': 20, 'not_ideal': 359, 'status': 2, 'objetivo_1': 20495.0, 'objetivo_2': 129.0, 'objetivo_3': 359.0}
-
-    general_metrics, metrics_by_block = optimize_beds(130, 100, [0, 1, 0])
-    print(general_metrics)
-    # Mejor caso: 0
-    # {'total_distance': 18980, 'beds_changed': 1, 'not_ideal': 358, 'status': 2, 'objetivo_1': 18980.0, 'objetivo_2': 0.0, 'objetivo_3': 358.0}
-
-    print("Objetivo 3")
-    general_metrics, metrics_by_block = optimize_beds(130, 100, [0, 0, -1])
-    print(general_metrics)
-    # Peor caso: 686.0
-    # {'total_distance': 20735, 'beds_changed': 18, 'not_ideal': 686, 'status': 2, 'objetivo_1': 20735.0, 'objetivo_2': 78.0, 'objetivo_3': 686.0}
-
-    general_metrics, metrics_by_block = optimize_beds(130, 100, [0, 0, 1])
-    print(general_metrics)
-    # Mejor caso: 24.0
-    # {'total_distance': 19210, 'beds_changed': 20, 'not_ideal': 24, 'status': 2, 'objetivo_1': 19210.0, 'objetivo_2': 75.0, 'objetivo_3': 24.0}

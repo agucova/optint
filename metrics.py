@@ -28,7 +28,7 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T) -> Tuple[Dict,
             beds_changed += 1
             changes_per_block[t] += 1
 
-    # def prints_per_blocks(beds_changed, total_distance, not_ideals_per_hour, changes_per_hour, patients_per_hour):
+    # prints_per_blocks(beds_changed, total_distance, not_ideals_per_hour, changes_per_hour, patients_per_hour):
 
     general_metrics = { 
         "total_distance": total_distance, 
