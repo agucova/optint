@@ -1,7 +1,5 @@
-from random import seed, uniform, choices
 
-seed(32893892489)
-
+from random import seed, choices
 class Contador:
     def __init__(self):
         self.value = 0
@@ -9,17 +7,10 @@ class Contador:
 class Paciente:
     pacientes_covid = Contador()
     
-    def __init__(self, camas_covid):
+    def __init__(self):
         self.cov = choices([True, False], weights=[0.4466019417, 1 - 0.4466019417])[
             0
         ]  # booleano
-
-        # si es que es covid entonces no puede ingresarse más
-        if self.cov and self.pacientes_covid.value == camas_covid:
-            self.cov = False
-
-        if self.cov and self.pacientes_covid.value < camas_covid:
-            self.pacientes_covid.value += 1
 
 
         self.cama_ideal = choices(
