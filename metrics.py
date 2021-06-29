@@ -18,7 +18,7 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T) -> Tuple[Dict,
             not_ideals_per_block[t] += 1 if Cama[i] not in B[G[p]] else 0
             dist_per_block[t] += D[Uni[i]][I[p]]
 
-    for key, value in alpha.items():
+    for (p, t), value in alpha.items():
         # print(value.X)
         if int(round(value.X, 0)) == 1:
             not_ideal += 1
@@ -38,8 +38,8 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T) -> Tuple[Dict,
         "objective_1": quicksum(Y[p, i, t] * D[Uni[i]][I[p]] for i in N for p in P for t in T).getValue(),
         "objective_2": quicksum(Z[p, t] * (Q - S[p]) for p in P for t in T).getValue(),
         "objective_3": quicksum(alpha[p, t] for p in P for t in T).getValue()
-    
     }
+    
     metrics_by_block = {
         "time": [2*t for t in T],
         "changes_per_block": changes_per_block,

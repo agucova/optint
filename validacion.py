@@ -3,7 +3,7 @@ from typing import List
 
 from gurobipy import GRB, Model, quicksum, Env
 
-from metricas_rorro import metrics
+from metricas_validacion import metrics
 from paciente import Paciente
 from parameters import gen_patients
 
@@ -202,7 +202,7 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int]) -> dict:
 
         if m.status is GRB.OPTIMAL:
             m.write("out_cama.sol")
-            return metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_end)
+            return metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_end, COV, V)
         return {"status": m.status}
 
 
