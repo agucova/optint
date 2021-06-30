@@ -2,7 +2,7 @@ from gurobipy import GRB, Model, quicksum, Env
 from typing import Tuple, Dict
 import pandas as pd
 
-def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T) -> Tuple[Dict, pd.DataFrame]:
+def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, E_start, E_end) -> Tuple[Dict, pd.DataFrame]:
     not_ideal = 0
     beds_changed = 0
     total_distance = 0
@@ -28,7 +28,10 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T) -> Tuple[Dict,
             beds_changed += 1
             changes_per_block[t] += 1
 
-    # prints_per_blocks(beds_changed, total_distance, not_ideals_per_hour, changes_per_hour, patients_per_hour):
+    # prints_per_blocks(beds_changed, total_distance, not_ideals_per_hour, changes_per_hour, patients_per_hour)
+    
+    # El siguiente codigo permite conseguir las accciones que debe realizar el hospital
+    print_acciones(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, E_start, E_end)
 
     general_metrics = { 
         "total_distance": total_distance, 
@@ -66,3 +69,23 @@ def prints_per_blocks(beds_changed, total_distance, not_ideals_per_hour, changes
         ),
         sep="\n",
     )
+
+def print_acciones(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, E_start, E_end):
+    for t in T:
+        # Entradas y salidas
+        for paciente, t_ in enumerate(E_start):
+            if t_ == t:
+                print(f"Entró el paciente {paciente} a la hora {t}")
+        for paciente, t_ in enumerate(E_end):
+            if t_ == t:
+                print(f"Salió el paciente {paciente} a la hora {t}")
+
+        for paciente in P:
+            if Z[paciente, t].X == 1.0:
+                print(f"El paciente {paciente} cambio de unidad en el tiempo {t}")
+                for cama in N:
+                    if Y[paciente, cama, t - 1].X == 1.0:
+                        print(f"cama previa: {cama}")
+                for cama in N:
+                    if Y[paciente, cama, t].X == 1.0:
+                        print(f"cama nueva: {cama}")

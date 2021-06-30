@@ -1,0 +1,236 @@
+Entro el paciente 0 a la hora 0
+Entro el paciente 1 a la hora 0
+Entro el paciente 2 a la hora 0
+Entro el paciente 3 a la hora 0
+Entro el paciente 4 a la hora 0
+Entro el paciente 5 a la hora 0
+Entro el paciente 6 a la hora 0
+Entro el paciente 7 a la hora 0
+Entro el paciente 8 a la hora 0
+Entro el paciente 9 a la hora 0
+Entro el paciente 10 a la hora 0
+Entro el paciente 11 a la hora 0
+Entro el paciente 12 a la hora 0
+Entro el paciente 13 a la hora 0
+Entro el paciente 15 a la hora 0
+Entro el paciente 16 a la hora 0
+Entro el paciente 17 a la hora 0
+Entro el paciente 18 a la hora 0
+Entro el paciente 19 a la hora 0
+Entro el paciente 20 a la hora 0
+Entro el paciente 21 a la hora 0
+Entro el paciente 22 a la hora 0
+Entro el paciente 23 a la hora 0
+Entro el paciente 24 a la hora 0
+Entro el paciente 25 a la hora 0
+Entro el paciente 26 a la hora 0
+Entro el paciente 27 a la hora 0
+Entro el paciente 28 a la hora 0
+Entro el paciente 29 a la hora 0
+Entro el paciente 30 a la hora 0
+Entro el paciente 31 a la hora 0
+Entro el paciente 32 a la hora 0
+Entro el paciente 33 a la hora 0
+Entro el paciente 34 a la hora 0
+Entro el paciente 35 a la hora 0
+Entro el paciente 36 a la hora 0
+Entro el paciente 38 a la hora 0
+Entro el paciente 39 a la hora 0
+Entro el paciente 40 a la hora 0
+Entro el paciente 41 a la hora 0
+Entro el paciente 42 a la hora 0
+Entro el paciente 44 a la hora 0
+Entro el paciente 45 a la hora 0
+Entro el paciente 46 a la hora 0
+Entro el paciente 47 a la hora 0
+Entro el paciente 49 a la hora 0
+Entro el paciente 50 a la hora 0
+Entro el paciente 51 a la hora 0
+Entro el paciente 52 a la hora 0
+Entro el paciente 53 a la hora 0
+Entro el paciente 54 a la hora 0
+Entro el paciente 55 a la hora 0
+Entro el paciente 56 a la hora 0
+Entro el paciente 57 a la hora 0
+Entro el paciente 58 a la hora 0
+Entro el paciente 59 a la hora 0
+Entro el paciente 62 a la hora 0
+Entro el paciente 63 a la hora 0
+Entro el paciente 64 a la hora 0
+Entro el paciente 65 a la hora 0
+Entro el paciente 66 a la hora 0
+Entro el paciente 67 a la hora 0
+Entro el paciente 68 a la hora 0
+Entro el paciente 69 a la hora 0
+Entro el paciente 70 a la hora 0
+Entro el paciente 72 a la hora 0
+Entro el paciente 73 a la hora 0
+Entro el paciente 75 a la hora 0
+Entro el paciente 77 a la hora 0
+Entro el paciente 78 a la hora 0
+Entro el paciente 79 a la hora 0
+Entro el paciente 80 a la hora 0
+Entro el paciente 81 a la hora 0
+Entro el paciente 82 a la hora 0
+Entro el paciente 83 a la hora 0
+Entro el paciente 85 a la hora 0
+Entro el paciente 86 a la hora 0
+Entro el paciente 87 a la hora 0
+Entro el paciente 88 a la hora 0
+Entro el paciente 89 a la hora 0
+Entro el paciente 90 a la hora 0
+Entro el paciente 91 a la hora 0
+Entro el paciente 92 a la hora 0
+Entro el paciente 93 a la hora 0
+Entro el paciente 94 a la hora 0
+Entro el paciente 95 a la hora 0
+Entro el paciente 96 a la hora 0
+Entro el paciente 97 a la hora 0
+Entro el paciente 98 a la hora 0
+Entro el paciente 74 a la hora 2
+Entro el paciente 60 a la hora 3
+Entro el paciente 71 a la hora 3
+Salio el paciente 13 a la hora 4
+Salio el paciente 17 a la hora 4
+Salio el paciente 59 a la hora 4
+Salio el paciente 72 a la hora 4
+El paciente 54 cambio de unidad en el tiempo 4
+cama previa: 101
+cama nueva: 101
+Salio el paciente 8 a la hora 5
+Salio el paciente 9 a la hora 5
+Salio el paciente 10 a la hora 5
+Salio el paciente 42 a la hora 5
+Salio el paciente 58 a la hora 5
+Salio el paciente 71 a la hora 5
+Salio el paciente 86 a la hora 5
+Entro el paciente 43 a la hora 6
+El paciente 38 cambio de unidad en el tiempo 6
+cama previa: 62
+cama nueva: 66
+Entro el paciente 14 a la hora 7
+Entro el paciente 84 a la hora 7
+Entro el paciente 99 a la hora 7
+Salio el paciente 94 a la hora 7
+El paciente 29 cambio de unidad en el tiempo 7
+cama previa: 73
+cama nueva: 44
+El paciente 51 cambio de unidad en el tiempo 7
+cama previa: 8
+cama nueva: 35
+El paciente 83 cambio de unidad en el tiempo 7
+cama previa: 80
+cama nueva: 74
+El paciente 21 cambio de unidad en el tiempo 8
+cama previa: 110
+cama nueva: 110
+El paciente 82 cambio de unidad en el tiempo 8
+cama previa: 106
+cama nueva: 111
+El paciente 87 cambio de unidad en el tiempo 8
+cama previa: 111
+cama nueva: 106
+Entro el paciente 37 a la hora 9
+Entro el paciente 61 a la hora 9
+Salio el paciente 12 a la hora 9
+Salio el paciente 29 a la hora 9
+Salio el paciente 31 a la hora 9
+Salio el paciente 55 a la hora 9
+El paciente 5 cambio de unidad en el tiempo 9
+cama previa: 125
+cama nueva: 99
+El paciente 31 cambio de unidad en el tiempo 9
+cama previa: 99
+cama nueva: 93
+El paciente 80 cambio de unidad en el tiempo 9
+cama previa: 5
+cama nueva: 13
+Salio el paciente 1 a la hora 10
+Salio el paciente 77 a la hora 10
+Entro el paciente 48 a la hora 11
+Entro el paciente 76 a la hora 11
+Salio el paciente 0 a la hora 11
+Salio el paciente 2 a la hora 11
+Salio el paciente 3 a la hora 11
+Salio el paciente 4 a la hora 11
+Salio el paciente 5 a la hora 11
+Salio el paciente 6 a la hora 11
+Salio el paciente 7 a la hora 11
+Salio el paciente 11 a la hora 11
+Salio el paciente 14 a la hora 11
+Salio el paciente 15 a la hora 11
+Salio el paciente 16 a la hora 11
+Salio el paciente 18 a la hora 11
+Salio el paciente 19 a la hora 11
+Salio el paciente 20 a la hora 11
+Salio el paciente 21 a la hora 11
+Salio el paciente 22 a la hora 11
+Salio el paciente 23 a la hora 11
+Salio el paciente 24 a la hora 11
+Salio el paciente 25 a la hora 11
+Salio el paciente 26 a la hora 11
+Salio el paciente 27 a la hora 11
+Salio el paciente 28 a la hora 11
+Salio el paciente 30 a la hora 11
+Salio el paciente 32 a la hora 11
+Salio el paciente 33 a la hora 11
+Salio el paciente 34 a la hora 11
+Salio el paciente 35 a la hora 11
+Salio el paciente 36 a la hora 11
+Salio el paciente 37 a la hora 11
+Salio el paciente 38 a la hora 11
+Salio el paciente 39 a la hora 11
+Salio el paciente 40 a la hora 11
+Salio el paciente 41 a la hora 11
+Salio el paciente 43 a la hora 11
+Salio el paciente 44 a la hora 11
+Salio el paciente 45 a la hora 11
+Salio el paciente 46 a la hora 11
+Salio el paciente 47 a la hora 11
+Salio el paciente 48 a la hora 11
+Salio el paciente 49 a la hora 11
+Salio el paciente 50 a la hora 11
+Salio el paciente 51 a la hora 11
+Salio el paciente 52 a la hora 11
+Salio el paciente 53 a la hora 11
+Salio el paciente 54 a la hora 11
+Salio el paciente 56 a la hora 11
+Salio el paciente 57 a la hora 11
+Salio el paciente 60 a la hora 11
+Salio el paciente 61 a la hora 11
+Salio el paciente 62 a la hora 11
+Salio el paciente 63 a la hora 11
+Salio el paciente 64 a la hora 11
+Salio el paciente 65 a la hora 11
+Salio el paciente 66 a la hora 11
+Salio el paciente 67 a la hora 11
+Salio el paciente 68 a la hora 11
+Salio el paciente 69 a la hora 11
+Salio el paciente 70 a la hora 11
+Salio el paciente 73 a la hora 11
+Salio el paciente 74 a la hora 11
+Salio el paciente 75 a la hora 11
+Salio el paciente 76 a la hora 11
+Salio el paciente 78 a la hora 11
+Salio el paciente 79 a la hora 11
+Salio el paciente 80 a la hora 11
+Salio el paciente 81 a la hora 11
+Salio el paciente 82 a la hora 11
+Salio el paciente 83 a la hora 11
+Salio el paciente 84 a la hora 11
+Salio el paciente 85 a la hora 11
+Salio el paciente 87 a la hora 11
+Salio el paciente 88 a la hora 11
+Salio el paciente 89 a la hora 11
+Salio el paciente 90 a la hora 11
+Salio el paciente 91 a la hora 11
+Salio el paciente 92 a la hora 11
+Salio el paciente 93 a la hora 11
+Salio el paciente 95 a la hora 11
+Salio el paciente 96 a la hora 11
+Salio el paciente 97 a la hora 11
+Salio el paciente 98 a la hora 11
+Salio el paciente 99 a la hora 11
+El paciente 16 cambio de unidad en el tiempo 11
+cama previa: 36
+cama nueva: 36

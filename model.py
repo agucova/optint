@@ -9,7 +9,7 @@ from paciente import Paciente
 from parameters import gen_patients
 
 
-def optimize_beds(n_beds: int, n_patients: int, cost: List[int], A=None, deterministic=True) -> dict:
+def optimize_beds(n_beds: int, n_patients: int, cost: List[int], A=None, deterministic=True, cambios=1, Q=7) -> dict:
     """Defines and optimizes the full bed distribution model.
     Returns whether it's feasible, the number of non-ideal beds, the number of changed beds and the total distance."""
 
@@ -58,7 +58,7 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int], A=None, determi
     P, G, I, E_start, E_end, V, S = gen_patients(n_patients, deterministic=deterministic)
     if A is None:
         A = [0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 1, 1]
-    Q = 7
+    # Q = 7
 
     # Tipo de cama
     Cama = [index for i in C for index, j in enumerate(i) for _ in range(j)]
@@ -173,7 +173,7 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int], A=None, determi
         # R10: p no puede ser trasladado más de 1 vez al el día
         m.addConstrs(
             (
-                quicksum(Z[p, t] for t in range(E_start[p], E_end[p] + 1)) <= 1
+                quicksum(Z[p, t] for t in range(E_start[p], E_end[p] + 1)) <= cambios
                 for p in P
             ),
             name="R10",
@@ -204,12 +204,12 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int], A=None, determi
 
         if m.status is GRB.OPTIMAL:
             m.write("out_cama.sol")
-            return metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T)
+            return metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, E_start, E_end)
         general_metrics = defaultdict(lambda: m.status)
         return general_metrics, None
 
 
 if __name__ == "__main__":
     # Analisis de mejores y peores soluciones para cada caso
-    general_metrics, metrics_by_block = optimize_beds(130, 100, [1, 5, 20, 2])
+    general_metrics, metrics_by_block = optimize_beds(130, 100, [1, 5, 20, 35])
     print(general_metrics)

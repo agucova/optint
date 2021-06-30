@@ -202,7 +202,7 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int]) -> dict:
 
         if m.status is GRB.OPTIMAL:
             m.write("out_cama.sol")
-            return metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_end, COV, V)
+            return metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_end, COV, V, Aux)
         return {"status": m.status}
 
 

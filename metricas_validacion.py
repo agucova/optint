@@ -1,6 +1,6 @@
 from gurobipy import GRB, Model, quicksum, Env
 
-def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_end, COV, V):
+def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_end, COV, V, Aux):
     not_ideal = 0
     beds_changed = 0
     total_distance = 0
@@ -17,7 +17,7 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_
     # for i, t in zip(N, T):
     #     if int(round(Y[4, i, t].X, 0)) == 1:
     #         print(Y[4, i, t].X, 4, i, t)
-
+    #Restriccion 1
     flag_paciente_por_camas = False
     for t in T:
         for i in N:
@@ -29,6 +29,32 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_
         print("No se respeta la cantidad de pacientes por cama")
     else:
         print("Se respeto la cantidad de pacientes por cama")
+    
+    #Restriccion 2
+    flag_cambio_cama = False
+    for p in P:
+        for i in N:
+            for t in range(E_start[p] + 1, E_end[p] + 1):
+                if (Y[p, i, t - 1] - Y[p, i, t]).getValue() > Z[p, t].X:
+                    print("No se cumple R21", p, i, t)
+                    flag_cambio_cama = True
+                if (Y[p, i, t] - Y[p, i, t - 1]).getValue() > Z[p, t].X:
+                    print("No se cumple R22", p, i, t)
+                    flag_cambio_cama = True
+    
+    for p in P:
+        for t in range(E_start[p] + 1):
+            if abs(Z[p,t].X) >= 1e-6:
+                print("No se cumple R23", p, i, t)
+                flag_cambio_cama = True
+        for t in range(E_end[p] + 1, T[-1] + 1):
+            if abs(Z[p, t].X) >= 1e-6:
+                print("No se cumple R24", p, i, t)
+                flag_cambio_cama = True  
+    if flag_cambio_cama:
+        print("No se respetan los cambios de camas")
+    else:
+        print("Se respetan los cambios de camas")
 
     #Restriccion 3
     flag_cantidad_maxima_cambios = False
@@ -56,10 +82,15 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_
         print("Se respetan los impedimientos de movilización")
 
     #Restriccion 5
-    if any(S[p] * Z[p, t].X > Q for p in P for t in T):
-        print("mori :c")
+    flag_cama_ideal = False
+    for p in P:
+        for t in range(E_start[p], E_end[p] + 1):
+            if 1.0 - quicksum(Y[p, i, t] * Aux[p, i] for i in N).getValue() != alpha[p, t].X:
+                flag_cama_ideal = True
+    if flag_cama_ideal:
+        print("No se respetan las camas ideales")
     else:
-        print("yey :D")
+        print("Se respetan las camas ideales")
 
     #Restriccion 6
     flag_pacientes_en_una_misma_cama = False
