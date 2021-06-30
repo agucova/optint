@@ -37,7 +37,8 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T) -> Tuple[Dict,
         "status": m.status,
         "objective_1": quicksum(Y[p, i, t] * D[Uni[i]][I[p]] for i in N for p in P for t in T).getValue(),
         "objective_2": quicksum(Z[p, t] * S[p] for p in P for t in T).getValue(),
-        "objective_3": quicksum(alpha[p, t] for p in P for t in T).getValue()
+        "objective_3": quicksum(alpha[p, t] for p in P for t in T).getValue(),
+        "objective_4": quicksum(Z[p, t] for p in P for t in T).getValue()
     }
     
     metrics_by_block = {
