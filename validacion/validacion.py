@@ -4,8 +4,9 @@ from typing import List
 from gurobipy import GRB, Model, quicksum, Env
 
 from metricas_validacion import metrics
-from paciente import Paciente
-from parameters import gen_patients
+
+from ... import paciente 
+from ..parameters import gen_patients
 
 
 def optimize_beds(n_beds: int, n_patients: int, cost: List[int]) -> dict:
