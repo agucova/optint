@@ -5,7 +5,7 @@ from gurobipy import GRB, Model, quicksum, Env
 
 from metricas_validacion import metrics
 
-from ... import paciente 
+from .paciente import Paciente 
 from ..parameters import gen_patients
 
 
