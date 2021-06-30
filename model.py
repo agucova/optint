@@ -4,7 +4,7 @@ from typing import List
 
 from gurobipy import GRB, Model, quicksum, Env
 
-from metrics import metrics
+from metrics import metrics 
 from paciente import Paciente
 from parameters import gen_patients
 
@@ -56,8 +56,8 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int], deterministic=T
     ]  # matriz
 
     P, G, I, E_start, E_end, V, S = gen_patients(n_patients, deterministic=deterministic)
-
-    A = [0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 1, 1]
+    if A is None:
+        A = [0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 1, 1]
     Q = 7
 
     # Tipo de cama
