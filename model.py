@@ -9,7 +9,7 @@ from paciente import Paciente
 from parameters import gen_patients
 
 
-def optimize_beds(n_beds: int, n_patients: int, cost: List[int], deterministic=True) -> dict:
+def optimize_beds(n_beds: int, n_patients: int, cost: List[int], A=None, deterministic=True) -> dict:
     """Defines and optimizes the full bed distribution model.
     Returns whether it's feasible, the number of non-ideal beds, the number of changed beds and the total distance."""
 
