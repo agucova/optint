@@ -1,3 +1,4 @@
+from collections import defaultdict
 from random import randint
 from typing import List
 
@@ -57,7 +58,7 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int]) -> dict:
     P, G, I, E_start, E_end, V, S = gen_patients(n_patients)
 
     A = [0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 1, 1]
-    Q = 8
+    Q = 7
 
     # Tipo de cama
     Cama = [index for i in C for index, j in enumerate(i) for _ in range(j)]
@@ -187,8 +188,9 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int]) -> dict:
         m.setObjective(
             quicksum(Y[p, i, t] * D[Uni[i]][I[p]] for i in N for p in P for t in T)
             * cost[0]
-            + quicksum(Z[p, t] * (Q + 1 - S[p]) for p in P for t in T) * cost[1]
-            + quicksum(alpha[p, t] for p in P for t in T) * cost[2],
+            - quicksum(Z[p, t] * S[p] for p in P for t in T) * cost[1]
+            + quicksum(alpha[p, t] for p in P for t in T) * cost[2]
+            + quicksum(Z[p, t] for p in P for t in T) * cost[3],
             GRB.MINIMIZE,
         )
 
@@ -203,13 +205,11 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int]) -> dict:
         if m.status is GRB.OPTIMAL:
             m.write("out_cama.sol")
             return metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T)
-        return {"status": m.status}, None
+        general_metrics = defaultdict(lambda: m.status)
+        return general_metrics, None
 
 
 if __name__ == "__main__":
     # Analisis de mejores y peores soluciones para cada caso
-    general_metrics, metrics_by_block = optimize_beds(130, 100, [1, 277, 50])
-    print(general_metrics)
-
-    general_metrics, metrics_by_block = optimize_beds(130, 100, [10, 3, 7])
+    general_metrics, metrics_by_block = optimize_beds(130, 100, [1, 5, 20, 2])
     print(general_metrics)
