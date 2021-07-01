@@ -18,16 +18,10 @@ poetry install
 ```
 
 ## Correr
-Para correr un ejemplo genérico del modelo de optimización, puedes usar:
+Para correr un ejemplo genérico del modelo de optimización y validar por tests todas las restricciones, puedes usar:
 
 ```shell
 python optint/main.py
-```
-
-Y para validar las restricciones en bases a tests sobre una solución generada en el momento:
-
-```shell
-python optint/validation/validation.py
 ```
 
 ## Análisis
