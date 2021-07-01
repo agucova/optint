@@ -204,7 +204,5 @@ from optint.validation.validation_metrics import metrics
 
 if __name__ == "__main__":
     # Analisis de mejores y peores soluciones para cada caso
-    print("Objetivo 1")
     metricas = optimize_beds(130, 94, [10, 5, 7, 40], metrics_func=metrics)
-    # print(metricas)
     
