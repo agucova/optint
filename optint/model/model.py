@@ -6,7 +6,7 @@ from optint.model.metrics import metrics
 from optint.model.parameters import gen_patients
 
 
-def optimize_beds(n_beds: int, n_patients: int, cost: List[int], A=None, deterministic=True, cambios=1, Q=7, metrics_func=metrics) -> dict:
+def optimize_beds(n_beds: int, n_patients: int, cost: List[int], A=None, deterministic=True, cambios=1, Q=7, metrics_func=metrics, validation=False) -> dict:
     """Defines and optimizes the full bed distribution model.
     Returns whether it's feasible, the number of non-ideal beds, the number of changed beds and the total distance."""
 
@@ -194,6 +194,6 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int], A=None, determi
 
         if m.status is GRB.OPTIMAL:
             m.write("out_cama.sol")
-            return metrics_func(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_end, COV, V, Aux)
+            return metrics_func(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_end, COV, V, Aux, validation)
         general_metrics = defaultdict(lambda: m.status)
         return general_metrics, None
