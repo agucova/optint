@@ -29,7 +29,7 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_
     if flag_paciente_por_camas:
         print("No se respeta la cantidad de pacientes por cama")
     else:
-        print("Se respeto la cantidad de pacientes por cama")
+        print("✅ Se respetó la cantidad de pacientes por cama")
     
     #Restriccion 2
     flag_cambio_cama = False
@@ -55,7 +55,7 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_
     if flag_cambio_cama:
         print("No se respetan los cambios de camas")
     else:
-        print("Se respetan los cambios de camas")
+        print("✅ Se respetan los cambios de camas")
 
     #Restriccion 3
     flag_cantidad_maxima_cambios = False
@@ -67,7 +67,7 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_
     if flag_cantidad_maxima_cambios:
         print("No se respetan los cambios máximos")
     else:
-        print("Se respetan los cambios máximos")
+        print("✅ Se respetan los cambios máximos")
 
     #Restricción 4
     flag_solo_pacientes_severos = False
@@ -80,7 +80,7 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_
     if flag_solo_pacientes_severos:
         print("No se respetan los impedimientos de movilización")
     else:
-        print("Se respetan los impedimientos de movilización")
+        print("✅ Se respetan los impedimientos de movilización")
 
     #Restriccion 5
     flag_cama_ideal = False
@@ -91,7 +91,7 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_
     if flag_cama_ideal:
         print("No se respetan las camas ideales")
     else:
-        print("Se respetan las camas ideales")
+        print("✅ Se respetan las camas ideales")
 
     #Restriccion 6
     flag_pacientes_en_una_misma_cama = False
@@ -103,7 +103,7 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_
     if flag_pacientes_en_una_misma_cama:
         print("No se respeta la cantidad de gente en una misma cama")
     else:
-        print("Se respeta la cantidad de gente en una misma cama")
+        print("✅ Se respeta la cantidad de gente en una misma cama")
 
     #Restriccion 7
     flag_paciente_covid_en_su_debida_cama = False
