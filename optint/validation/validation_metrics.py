@@ -115,7 +115,7 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_
     if flag_paciente_covid_en_su_debida_cama:
         print("No se respeta que la gente tenga covid solo esté en su zona")
     else:
-        print("Se respeta que la gente tenga covid solo esté en su zona")
+        print("✅ Se respeta que la gente tenga covid solo esté en su zona")
 
     #Restriccion 8
     flag_cama_no_asignada = False
@@ -127,7 +127,7 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_
     if flag_cama_no_asignada:
         print("No se respeta que la gente no tenga cama antes de entrar")
     else:
-        print("Se respeta que la gente no tenga cama antes de entrar")
+        print("✅ Se respeta que la gente no tenga cama antes de entrar")
 
     #Restriccion 9
     flag_cama_asignada = False
@@ -139,7 +139,7 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_
     if flag_cama_asignada:
         print("No se respeta que la gente no tenga cama después de salir")
     else:
-        print("Se respeta que la gente no tenga cama después de salir")
+        print("✅ Se respeta que la gente no tenga cama después de salir")
 
     #Restriccion 10
     flag_traslados_diarios = False
@@ -150,7 +150,7 @@ def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_
     if flag_traslados_diarios:
         print("No se respeta que la gente sea trasladada al menos una vez")
     else:
-        print("Se respeta que la gente sea trasladada al menos una vez")
+        print("✅ Se respeta que la gente sea trasladada al menos una vez")
 
     #Restriccion 11
     

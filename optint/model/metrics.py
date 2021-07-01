@@ -4,7 +4,7 @@ import pandas as pd
 from gurobipy import quicksum
 
 
-def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, E_start, E_end) -> Tuple[Dict, pd.DataFrame]:
+def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_end, COV, V, Aux) -> Tuple[Dict, pd.DataFrame]:
     not_ideal = 0
     beds_changed = 0
     total_distance = 0
