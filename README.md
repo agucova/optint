@@ -1,4 +1,4 @@
-# optint
+# Optin't
 
  Modelo de optimización para mejorar la eficiencia y distribución de camas de un hospital. Creado para el curso Optimización (ICS1113) de la Escuela de Ingeniería UC.
 ## Instalación
