@@ -1,5 +1,5 @@
+from random import choices
 
-from random import seed, choices
 class Contador:
     def __init__(self):
         self.value = 0

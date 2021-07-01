@@ -1,4 +1,5 @@
-from gurobipy import GRB, Model, quicksum, Env
+from gurobipy import GRB, Env, Model, quicksum
+
 
 def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_end, COV, V, Aux):
     not_ideal = 0

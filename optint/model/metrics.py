@@ -1,6 +1,8 @@
-from gurobipy import GRB, Model, quicksum, Env
-from typing import Tuple, Dict
+from typing import Dict, Tuple
+
 import pandas as pd
+from gurobipy import quicksum
+
 
 def metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, E_start, E_end) -> Tuple[Dict, pd.DataFrame]:
     not_ideal = 0

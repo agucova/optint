@@ -1,12 +1,7 @@
-from random import randint
 from typing import List
 
-from gurobipy import GRB, Model, quicksum, Env
-
-from metricas_validacion import metrics
-
-from .paciente import Paciente 
-from ..parameters import gen_patients
+from gurobipy import GRB, Env, Model, quicksum
+from optint.model.model import gen_patients
 
 
 def optimize_beds(n_beds: int, n_patients: int, cost: List[int]) -> dict:

@@ -1,7 +1,8 @@
-from typing import Tuple, List
-from paciente import Paciente
 from random import seed
-from functools import lru_cache
+from typing import List, Tuple
+
+from optint.model.patient import Paciente
+
 
 def gen_patients(
     n_pacientes: int,

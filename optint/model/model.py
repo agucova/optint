@@ -1,24 +1,14 @@
 from collections import defaultdict
-from random import randint
 from typing import List
 
-from gurobipy import GRB, Model, quicksum, Env
-
-from metrics import metrics 
-from paciente import Paciente
-from parameters import gen_patients
+from gurobipy import GRB, Env, Model, quicksum
+from optint.model.metrics import metrics
+from optint.model.parameters import gen_patients
 
 
 def optimize_beds(n_beds: int, n_patients: int, cost: List[int], A=None, deterministic=True, cambios=1, Q=7) -> dict:
     """Defines and optimizes the full bed distribution model.
     Returns whether it's feasible, the number of non-ideal beds, the number of changed beds and the total distance."""
-
-    # 122 es el máximo factible que corre, no arreglamos los datos para obtener este resultado xD
-    # El número máximo de pacientes en un día es de 122 a lo largo del 2020
-    # El número mínimo de pacientes en un día es de 27
-    # Promedio de pacientes por día es de 94
-
-    n_beds = 130
 
     # Sets
     COV = range(3)
@@ -207,9 +197,3 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int], A=None, determi
             return metrics(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, E_start, E_end)
         general_metrics = defaultdict(lambda: m.status)
         return general_metrics, None
-
-
-if __name__ == "__main__":
-    # Analisis de mejores y peores soluciones para cada caso
-    general_metrics, metrics_by_block = optimize_beds(130, 100, [1, 5, 20, 35])
-    print(general_metrics)
