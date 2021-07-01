@@ -5,8 +5,7 @@ from optint.model.patient import Paciente
 
 
 def gen_patients(
-    n_pacientes: int,
-    deterministic=True
+    n_pacientes: int, deterministic=True
 ) -> Tuple[
     List[int], List[int], List[int], List[int], List[int], List[bool], List[int]
 ]:

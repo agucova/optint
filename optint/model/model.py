@@ -6,7 +6,17 @@ from optint.model.metrics import metrics
 from optint.model.parameters import gen_patients
 
 
-def optimize_beds(n_beds: int, n_patients: int, cost: List[int], A=None, deterministic=True, cambios=1, Q=7, metrics_func=metrics, validation=False) -> dict:
+def optimize_beds(
+    n_beds: int,
+    n_patients: int,
+    cost: List[int],
+    A=None,
+    deterministic=True,
+    cambios=1,
+    Q=7,
+    metrics_func=metrics,
+    validation=False,
+) -> dict:
     """Defines and optimizes the full bed distribution model.
     Returns whether it's feasible, the number of non-ideal beds, the number of changed beds and the total distance."""
 
@@ -45,7 +55,9 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int], A=None, determi
         [15, 10, 25, 20, 35, 20, 10, 0],
     ]  # matriz
 
-    P, G, I, E_start, E_end, V, S = gen_patients(n_patients, deterministic=deterministic)
+    P, G, I, E_start, E_end, V, S = gen_patients(
+        n_patients, deterministic=deterministic
+    )
     if A is None:
         A = [0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 1, 1]
     # Q = 7
@@ -59,7 +71,6 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int], A=None, determi
     Aux = {(p, i): int(bool(Cama[i] in B[G[p]])) for i in N for p in range(n_patients)}
 
     COV = [i for i in N if Uni[i] in COV]
-
 
     with Env() as env, Model(env=env) as m:
         # Variables
@@ -194,6 +205,29 @@ def optimize_beds(n_beds: int, n_patients: int, cost: List[int], A=None, determi
 
         if m.status is GRB.OPTIMAL:
             m.write("out_cama.sol")
-            return metrics_func(m, Y, alpha, Z, D, I, B, G, Cama, Uni, Q, S, N, P, T, A, E_start, E_end, COV, V, Aux, validation)
+            return metrics_func(
+                m,
+                Y,
+                alpha,
+                Z,
+                D,
+                I,
+                B,
+                G,
+                Cama,
+                Uni,
+                Q,
+                S,
+                N,
+                P,
+                T,
+                A,
+                E_start,
+                E_end,
+                COV,
+                V,
+                Aux,
+                validation,
+            )
         general_metrics = defaultdict(lambda: m.status)
         return general_metrics, None
